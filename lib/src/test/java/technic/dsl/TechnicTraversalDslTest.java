@@ -3,10 +3,41 @@
  */
 package technic.dsl;
 
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.junit.jupiter.api.BeforeAll;
+
 class TechnicTraversalDslTest {
     
+    private static Graph graph;
+    private static TechnicTraversalSource g;
+
+    private static Graph buildGraph() {
+        BaseConfiguration configuration = new BaseConfiguration();
+        configuration.setProperty("gremlin.tinkerGraph.vertexIdManager", "ANY");
+
+        return TinkerGraph.open(configuration);
+
+    }
+
+    @BeforeAll
+    public static void setup() {
+        graph = buildGraph();
+        g = AnonymousTraversalSource.traversal(TechnicTraversalSource.class).withEmbedded(graph);
+
+        g.addV("date").property(T.id, "20220207").next();
+    }
+    
+    @Test
+    public void gearStepShouldCreateGearVertex() {
+         g.gear("gearId").profile().next();
+    }
+
    
 }
