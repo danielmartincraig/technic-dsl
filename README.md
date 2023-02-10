@@ -1,6 +1,6 @@
 # TECHNIC-DSL
 
-Technic-dsl defines lego technic constructions in terms of Gremlin traversals.
+Technic-dsl defines lego technic gears in terms of gremlin traversals
 
 Language:
 
@@ -8,6 +8,6 @@ Language:
 |------|----------------|
 | gear | g.gear(gearId) |
 
-| Verb   |                                        |
-|--------|----------------------------------------|
-| drives | g.gear(gearId).drives(__.gear(gear2Id) |
+| Verb   |                                                     |
+|--------|-----------------------------------------------------|
+| drives | g.gear(driverGearId).drives(__.gear(followerGearId) |
