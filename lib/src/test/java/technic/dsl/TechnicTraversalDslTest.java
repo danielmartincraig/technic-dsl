@@ -4,6 +4,7 @@
 package technic.dsl;
 
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,13 +31,19 @@ class TechnicTraversalDslTest {
     public static void setup() {
         graph = buildGraph();
         g = AnonymousTraversalSource.traversal(TechnicTraversalSource.class).withEmbedded(graph);
-
-        g.addV("date").property(T.id, "20220207").next();
     }
     
     @Test
     public void gearStepShouldCreateGearVertex() {
-         g.gear("gearId").profile().next();
+        g.gear("gearId").next();
+        assertEquals("gearId", g.V("gearId").id().next());
+    }
+
+    @Test
+    public void drivesStepShouldCreateDrivesEdge() {
+        g.gear("driverGear").drives(__.gear("followerGear")).next();
+        assertEquals(2, g.V("driverGear", "followerGear").count().next());
+        assertEquals(1, g.V("driverGear").out().count().next());
     }
 
    

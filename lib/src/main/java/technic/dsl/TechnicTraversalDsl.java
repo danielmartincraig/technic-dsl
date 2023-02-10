@@ -11,8 +11,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 public interface TechnicTraversalDsl<S, E> extends GraphTraversal.Admin<S, E> {
     
     public default GraphTraversal<S, Vertex> gear(String gearId) {
-        return coalesce(__.V(gearId),
-                        __.addV("gear").property(T.id, gearId));
+        return V(gearId).fold().coalesce(__.unfold(), __.addV("gear").property(T.id, gearId));
     }
 
     public default GraphTraversal<S, Edge> drives(final GraphTraversal<S, Vertex> traversal) {
