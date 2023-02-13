@@ -28,11 +28,9 @@ public class TechnicTraversalSourceDsl extends GraphTraversalSource {
     public GraphTraversal<Vertex, Vertex> gear(String gearId) {
         GraphTraversalSource clone = this.clone();
 
-        clone.getBytecode().addStep(GraphTraversal.Symbols.V);
         GraphTraversal<Vertex, Vertex> traversal = new DefaultGraphTraversal<>(clone);
-        traversal.asAdmin().addStep(new GraphStep<>(traversal.asAdmin(), Vertex.class, true));
+        traversal.asAdmin().addStep(new GraphStep<>(traversal.asAdmin(), Vertex.class, true, gearId));
 
-        traversal = traversal.has(T.id, gearId);
         traversal = traversal.fold().coalesce(__.unfold(), __.addV("gear").property(T.id, gearId));
         return traversal;
     }
